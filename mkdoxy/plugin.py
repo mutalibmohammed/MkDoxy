@@ -89,8 +89,11 @@ class MkDoxy(BasePlugin):
             relative_path = image_path.relative_to(source_xml_dir)
             destination_path = destination_dir.joinpath(relative_path)
             destination_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(image_path, destination_path)
-            copied.append(relative_path)
+            try:
+                shutil.copy2(image_path, destination_path)
+                copied.append(relative_path)
+            except Exception as e:
+                logging.error(f"Failed to copy {image_path} to {destination_path}: {e}")
 
         return copied
 
